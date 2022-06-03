@@ -23,52 +23,110 @@ let df = dfd.merge({
   how: "left",
 });
 
-const dfByContent = df
-  .groupby(["title"])
-  .agg({
-    member: "count",
-  })
-  .rename({ member_count: "download_count" })
-  .sortValues("download_count", { ascending: false });
+df.addColumn("yearMonth", df.column("downloadedAt").str.substr(0, 7), {
+  inplace: true,
+});
+df.drop({ columns: ["downloadedAt"], inplace: true });
 
-const dfByContentType = df
+let groupByColumn = "title";
+const dfByContent = df
+  .loc({
+    columns: [
+      groupByColumn,
+      "typePlural",
+      "memberType",
+      "universityCompany",
+      "country",
+      "stateProvince",
+    ],
+  })
+  .groupby([groupByColumn])
+  .apply((x) => {
+    const originalIndices = x.index;
+
+    const newRow = [
+      x.column(groupByColumn).iat(0),
+      x.column("typePlural").count(),
+      "",
+      x
+        .query(x["memberType"].ne("Other"))
+        .column("universityCompany")
+        .nUnique(),
+      x.column("country").nUnique(),
+      x.query(x["country"].eq("U.S.")).column("stateProvince").nUnique(),
+    ];
+
+    y = x.append([newRow], [x.index[x.index.length - 1] + 1]);
+    y.drop({ index: originalIndices, inplace: true });
+
+    return y;
+  });
+dfByContent.drop({
+  columns: [`${groupByColumn}_Group`, "memberType"],
+  inplace: true,
+});
+dfByContent.rename(
+  {
+    universityCompany: "university",
+    stateProvince: "state",
+    typePlural: "downloadCount",
+  },
+  { inplace: true }
+);
+dfByContent.sortValues("downloadCount", { ascending: false, inplace: true });
+dfByContent.print();
+
+dfContentTypeCount = distributedContent
   .groupby(["typePlural"])
   .agg({
-    member: "count",
+    distributedContent: "count",
   })
-  .rename({ member_count: "download_count" })
-  .sortValues("download_count", { ascending: false });
+  .rename({ distributedContent_count: "numMaterials" });
+
+let dfByContentType = df
+  .groupby(["typePlural"])
+  .agg({
+    distributedContent: "count",
+  })
+  .rename({ distributedContent_count: "downloadCount" })
+  .sortValues("downloadCount", { ascending: false });
+
+dfByContentType = dfd.merge({
+  left: dfContentTypeCount,
+  right: dfByContentType,
+  on: ["typePlural"],
+  how: "left",
+});
+
+dfByContentType.print();
 
 const dfByMemberType = df
   .groupby(["memberType"])
   .agg({
-    member: "count",
+    distributedContent: "count",
   })
-  .rename({ member_count: "download_count" })
-  .sortValues("download_count", { ascending: false });
+  .rename({ distributedContent_count: "downloadCount" })
+  .sortValues("downloadCount", { ascending: false });
+
+dfByMemberType.print();
 
 const dfInstructors = df.query(df["memberType"].eq("Instructor"));
-
 const dfByUniversity = dfInstructors
   .groupby(["universityCompany"])
   .agg({
-    member: "count",
+    distributedContent: "count",
   })
-  .rename({ member_count: "download_count" })
-  .sortValues("download_count", { ascending: false })
+  .rename({ distributedContent_count: "downloadCount" })
+  .sortValues("downloadCount", { ascending: false })
   .head(50);
 
-// console.log(dfd.toJSON(dfByUniversity));
+dfByUniversity.print();
 
-function sum_vals(col) {
-  console.log(`col==`);
-  console.log(col);
-  return col.reduce((a, b) => a + b, 0);
-}
+const dfByYearMonth = df
+  .groupby(["yearMonth"])
+  .agg({
+    distributedContent: "count",
+  })
+  .rename({ distributedContent_count: "downloadCount" });
 
-const dfTest = dfByContentType.groupby(["typePlural"]).apply((x) => {
-  console.log(x);
-  return x;
-});
-
-// dfTest.print();
+dfByYearMonth.print();
