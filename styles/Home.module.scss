@@ -1,2 +1,23 @@
 .main {
+  margin-top: 2rem;
+
+  h1 {
+    font-size: 1.7rem;
+    font-weight: 500;
+  }
+
+  p.subtitle {
+    color: #aaa;
+    margin-top: 0.5rem;
+
+    a {
+      color: #888;
+      text-decoration: underline;
+
+      &:hover {
+        color: #555;
+        text-decoration: none;
+      }
+    }
+  }
 }
