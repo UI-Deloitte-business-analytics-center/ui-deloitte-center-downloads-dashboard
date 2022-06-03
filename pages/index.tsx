@@ -1,7 +1,11 @@
-import type { NextPage } from "next";
+import type { NextPage, GetServerSideProps } from "next";
+
 import * as dfd from "danfojs-node";
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
+import { Box, Container } from "@mui/material";
+import React from "react";
+import Plot from "react-plotly.js";
 
 const Home: NextPage = (props: any) => {
   console.log(props);
@@ -18,17 +22,19 @@ const Home: NextPage = (props: any) => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <Container maxWidth="md" sx={{ backgroundColor: "yellow" }}>
+          <h1 className={styles.title}>UI-Deloitte Center Downloads Summary</h1>
 
-        <pre>{JSON.stringify(props, null, 2)}</pre>
+          <Box>
+            <pre>{JSON.stringify(props, null, 2)}</pre>
+          </Box>
+        </Container>
       </main>
     </div>
   );
 };
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await fetch(
     `https://centerforanalytics.giesbusiness.illinois.edu/_functions/downloads_summary`
   );
@@ -173,13 +179,13 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      dfByContent: dfd.toJSON(dfByContent),
-      dfByContentType: dfd.toJSON(dfByContentType),
-      dfByMemberType: dfd.toJSON(dfByMemberType),
-      dfByUniversity: dfd.toJSON(dfByUniversity),
-      dfByYearMonth: dfd.toJSON(dfByYearMonth),
+      dfByContent: dfd.toJSON(dfByContent, { format: "row" }),
+      dfByContentType: dfd.toJSON(dfByContentType, { format: "row" }),
+      dfByMemberType: dfd.toJSON(dfByMemberType, { format: "row" }),
+      dfByUniversity: dfd.toJSON(dfByUniversity, { format: "row" }),
+      dfByYearMonth: dfd.toJSON(dfByYearMonth, { format: "row" }),
     },
   };
-}
+};
 
 export default Home;
