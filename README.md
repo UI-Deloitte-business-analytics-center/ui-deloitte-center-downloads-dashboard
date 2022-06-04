@@ -2,6 +2,8 @@
 
 This dashboard fetches download logs from the [University of Illinois-Deloitte Foundation Center for Business Analytics Website](https://centerforanalytics.giesbusiness.illinois.edu/) and displays a summary of who are using the materials.
 
+For questions or issues, please email Ye Joo Park at [ypark32@illinois.edu](mailto:ypark32@illinois.edu).
+
 ## Notes
 - If a member downloads a material more than once, only the first download is used to generate this summary.
 - The download logs are pulled from Wix's `http-functions` backend. To customize what data you are pulling, edit the `http-functions.js` file through the Wix editor.
