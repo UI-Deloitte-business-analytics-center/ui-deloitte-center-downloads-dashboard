@@ -1,34 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📊 UI-Deloitte Center Downloads Summary Dashboard
 
-## Getting Started
+This dashboard fetches download logs from the [University of Illinois-Deloitte Foundation Center for Business Analytics Website](https://centerforanalytics.giesbusiness.illinois.edu/) and displays a summary of who are using the materials.
 
-First, run the development server:
+## Notes
+- If a member downloads a material more than once, only the first download is used to generate this summary.
+- The download logs are pulled from Wix's `http-functions` backend. To customize what data you are pulling, edit the `http-functions.js` file through the Wix editor.
+- The Center website's URL is hard-coded (https://centerforanalytics.giesbusiness.illinois.edu/) when fetching logs through a HTTP GET request. If the URL changes, update it accordingly in the [retrieveSummary.ts] file (https://github.com/UI-Deloitte-business-analytics-center/ui-deloitte-center-downloads-dashboard/blob/main/utils/retrieveSummary.ts).
 
-```bash
-npm run dev
-# or
-yarn dev
+```typescript
+export async function retrieveSummary(): Promise<IDownloadsSummary> {
+  // change the URL inside fetch()
+  const res = await fetch(
+    `https://centerforanalytics.giesbusiness.illinois.edu/_functions/downloads_summary`
+  );
+  const data = await res.json();
+  
+  // ...
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Screenshots
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+<img src="https://user-images.githubusercontent.com/1064036/172012906-3469dee7-f5fe-43e9-811e-0f49c17e086f.png" alt="" width="600" />
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+<img src="https://user-images.githubusercontent.com/1064036/172012925-d28f28d8-b404-4439-a5b1-8cc6728123f8.png" alt="" width="600" />
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<img src="https://user-images.githubusercontent.com/1064036/172012934-45843815-72e5-41d9-a5d6-33bd8aef345d.png" alt="" width="600" />
 
-## Learn More
+<img src="https://user-images.githubusercontent.com/1064036/172012947-b065b7ab-038d-4779-9a13-09695d5cb0f4.png" alt="" width="600" />
 
-To learn more about Next.js, take a look at the following resources:
+## Built with
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This site is built with [Next.js](https://nextjs.org/) and is continuously deployed to [Vercel](https://www.vercel.com).
