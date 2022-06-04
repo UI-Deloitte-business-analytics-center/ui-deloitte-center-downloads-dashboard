@@ -167,14 +167,18 @@ export async function retrieveSummary() {
     .agg({
       distributedContent: "count",
     })
-    .rename({ distributedContent_count: "downloadCount" })
-    .sortValues("downloadCount", { ascending: false });
+    .rename({ distributedContent_count: "downloadCount" });
 
   dfByContentType = dfd.merge({
     left: dfContentTypeCount,
     right: dfByContentType,
     on: ["typePlural"],
     how: "left",
+  });
+
+  dfByContentType.sortValues("downloadCount", {
+    ascending: false,
+    inplace: true,
   });
 
   dfByContentType.print();

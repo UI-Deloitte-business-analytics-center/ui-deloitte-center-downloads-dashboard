@@ -1,0 +1,17 @@
+.chartWrapper {
+  font-size: 0.9rem;
+
+  &.bar {
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  &.pie {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  &.line {
+    margin-bottom: 3rem;
+  }
+}

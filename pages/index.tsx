@@ -3,30 +3,38 @@ import type { NextPage, GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
-import { Box, Container, Typography, Tabs, Tab } from "@mui/material";
-import {
-  VictoryBar,
-  VictoryPie,
-  VictoryChart,
-  VictoryAxis,
-  VictoryTheme,
-  VictoryStack,
-  VictoryLabel,
-} from "victory";
+import { Box, Container, Tabs, Tab } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { retrieveSummary } from "../utils/retrieveSummary";
+import {
+  IContentDownloadSummary,
+  IContentTypeDownloadsSummary,
+  IMemberTypeDownloadsSummary,
+  IUniversityDownloadsSummary,
+  IYearMonthDownloadsSummary,
+} from "../types/downloads-summary";
+import SummaryBarChart from "../components/SummaryCharts/SummaryBarChart";
+import SummaryLineChart from "../components/SummaryCharts/SummaryLineChart";
+import SummaryPieChart from "../components/SummaryCharts/SummaryPieChart";
 const SummaryDataGrid = dynamic(() => import("../components/SummaryDataGrid"), {
   ssr: false,
 });
 
-function a11yProps(index: number) {
+function getTabProps(index: number) {
   return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    id: `summary-tab-${index}`,
   };
 }
 
-const Home: NextPage = (props: any) => {
+interface IHomePageProps {
+  dfByContent: IContentDownloadSummary[];
+  dfByContentType: IContentTypeDownloadsSummary[];
+  dfByMemberType: IMemberTypeDownloadsSummary[];
+  dfByUniversity: IUniversityDownloadsSummary[];
+  dfByYearMonth: IYearMonthDownloadsSummary[];
+}
+
+const Home: NextPage = (props: IHomePageProps) => {
   const {
     dfByContent,
     dfByContentType,
@@ -95,62 +103,104 @@ const Home: NextPage = (props: any) => {
             <Tabs
               value={tabIndex}
               onChange={handleChange}
-              aria-label="basic tabs example"
+              aria-label="summary criteria tabs"
             >
-              <Tab label="Content" {...a11yProps(0)} />
-              <Tab label="Content Type" {...a11yProps(1)} />
-              <Tab label="Member Type" {...a11yProps(2)} />
-              <Tab label="University" {...a11yProps(1)} />
-              <Tab label="Monthly" {...a11yProps(2)} />
+              <Tab label="Content" {...getTabProps(0)} />
+              <Tab label="Content Type" {...getTabProps(1)} />
+              <Tab label="Member Type" {...getTabProps(2)} />
+              <Tab label="University" {...getTabProps(3)} />
+              <Tab label="Monthly" {...getTabProps(4)} />
             </Tabs>
           </Box>
 
           <Box>
             {tabIndex === 0 && (
-              <SummaryDataGrid
-                title="Downloads by Distributed Content"
-                data={dfByContent}
-                columns={dfByContentColumns}
-              />
+              <Box className={styles.tabContent}>
+                <h2>Downloads by Distributed Content</h2>
+
+                <SummaryBarChart
+                  height={1200}
+                  tickWidth={340}
+                  data={dfByContent}
+                  xDataKey="downloadCount"
+                  yDataKey="title"
+                />
+
+                <SummaryDataGrid
+                  data={dfByContent}
+                  columns={dfByContentColumns}
+                />
+              </Box>
             )}
             {tabIndex === 1 && (
-              <SummaryDataGrid
-                title="Downloads by Content Type"
-                height={400}
-                data={dfByContentType}
-                columns={dfByContentTypeColumns}
-              />
+              <Box className={styles.tabContent}>
+                <h2>Downloads by Content Type</h2>
+
+                <SummaryPieChart
+                  data={dfByContentType}
+                  dataKey="downloadCount"
+                  nameKey="typePlural"
+                />
+
+                <SummaryDataGrid
+                  height={400}
+                  data={dfByContentType}
+                  columns={dfByContentTypeColumns}
+                />
+              </Box>
             )}
             {tabIndex === 2 && (
-              <SummaryDataGrid
-                title="Downloads by Member Type"
-                height={455}
-                data={dfByMemberType}
-                columns={dfByMemberTypeColumns}
-              />
+              <Box className={styles.tabContent}>
+                <h2>Downloads by Member Type</h2>
+
+                <SummaryPieChart
+                  data={dfByMemberType}
+                  dataKey="downloadCount"
+                  nameKey="memberType"
+                />
+
+                <SummaryDataGrid
+                  height={455}
+                  data={dfByMemberType}
+                  columns={dfByMemberTypeColumns}
+                />
+              </Box>
             )}
             {tabIndex === 3 && (
-              <SummaryDataGrid
-                title="Downloads by University (Top 100)"
-                data={dfByUniversity}
-                columns={dfByUniversityColumns}
-              />
+              <Box className={styles.tabContent}>
+                <h2>Downloads by University (Top 100)</h2>
+
+                <SummaryBarChart
+                  height={4000}
+                  tickWidth={340}
+                  data={dfByUniversity}
+                  xDataKey="downloadCount"
+                  yDataKey="university"
+                />
+
+                <SummaryDataGrid
+                  data={dfByUniversity}
+                  columns={dfByUniversityColumns}
+                />
+              </Box>
             )}
             {tabIndex === 4 && (
-              <SummaryDataGrid
-                title="Monthly Downloads"
-                data={dfByYearMonth}
-                columns={dfByYearMonthColumns}
-              />
+              <Box className={styles.tabContent}>
+                <h2>Monthly Downloads</h2>
+
+                <SummaryLineChart
+                  data={dfByYearMonth}
+                  height={500}
+                  xDataKey="yearMonth"
+                  yDataKey="downloadCount"
+                />
+
+                <SummaryDataGrid
+                  data={dfByYearMonth}
+                  columns={dfByYearMonthColumns}
+                />
+              </Box>
             )}
-          </Box>
-
-          <Box>
-            <VictoryPie />
-          </Box>
-
-          <Box>
-            <pre>{JSON.stringify(props, null, 2)}</pre>
           </Box>
         </Container>
       </main>
