@@ -7,7 +7,7 @@ For questions or issues, please email Ye Joo Park at [ypark32@illinois.edu](mail
 ## Notes
 - If a member downloads a material more than once, only the first download is used to generate this summary.
 - The download logs are pulled from Wix's `http-functions` backend. To customize what data you are pulling, edit the `http-functions.js` file through the Wix editor.
-- The Center website's URL is hard-coded (https://centerforanalytics.giesbusiness.illinois.edu/) when fetching logs through a HTTP GET request. If the URL changes, update it accordingly in the [retrieveSummary.ts] file (https://github.com/UI-Deloitte-business-analytics-center/ui-deloitte-center-downloads-dashboard/blob/main/utils/retrieveSummary.ts).
+- The Center website's URL is hard-coded (https://centerforanalytics.giesbusiness.illinois.edu/) when fetching logs through a HTTP GET request. If the URL changes, update it accordingly in the `utils/retrieveSummary.ts` file (https://github.com/UI-Deloitte-business-analytics-center/ui-deloitte-center-downloads-dashboard/blob/main/utils/retrieveSummary.ts).
 
 ```typescript
 export async function retrieveSummary(): Promise<IDownloadsSummary> {
