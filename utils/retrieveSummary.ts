@@ -1,5 +1,58 @@
 import * as dfd from "danfojs-node";
 
+const stateAbbrevationMap = {
+  alabama: "AL",
+  alaska: "AK",
+  arizona: "AZ",
+  arkansas: "AR",
+  california: "CA",
+  colorado: "CO",
+  connecticut: "CT",
+  delaware: "DE",
+  florida: "FL",
+  georgia: "GA",
+  hawaii: "HI",
+  idaho: "ID",
+  illinois: "IL",
+  indiana: "IN",
+  iowa: "IA",
+  kansas: "KS",
+  kentucky: "KY",
+  louisiana: "LA",
+  maine: "ME",
+  maryland: "MD",
+  massachusetts: "MA",
+  michigan: "MI",
+  minnesota: "MN",
+  mississippi: "MS",
+  missouri: "MO",
+  montana: "MT",
+  nebraska: "NB*",
+  nevada: "NV",
+  "new hampshire": "NH",
+  "new jersey": "NJ",
+  "new mexico": "NM",
+  "new york": "NY",
+  "north carolina": "NC",
+  "north dakota": "ND",
+  ohio: "OH",
+  oklahoma: "OK",
+  oregon: "OR",
+  pennsylvania: "PA",
+  "rhode island": "RI",
+  "south carolina": "SC",
+  "south dakota": "SD",
+  tennessee: "TN",
+  texas: "TX",
+  utah: "UT",
+  vermont: "VT",
+  virginia: "VA",
+  washington: "WA",
+  "west virginia": "WV",
+  wisconsin: "WI",
+  wyoming: "WY",
+};
+
 export async function retrieveSummary() {
   const res = await fetch(
     `https://centerforanalytics.giesbusiness.illinois.edu/_functions/downloads_summary`
@@ -58,7 +111,25 @@ export async function retrieveSummary() {
           .column("universityCompany")
           .nUnique(),
         x.column("country").nUnique(),
-        x.query(x["country"].eq("U.S.")).column("stateProvince").nUnique(),
+        x
+          .query(x["country"].eq("U.S."))
+          .column("stateProvince")
+          .apply((state) => {
+            const stateLower = String(state).trim().toLowerCase();
+
+            if (
+              Object.values(stateAbbrevationMap).includes(
+                stateLower.toUpperCase()
+              )
+            ) {
+              return stateLower.toUpperCase();
+            } else if (Object.keys(stateAbbrevationMap).includes(stateLower)) {
+              return stateAbbrevationMap[stateLower];
+            } else {
+              return null;
+            }
+          })
+          .nUnique(),
       ];
 
       const y = x.append(
