@@ -25,8 +25,6 @@ export default function SummaryPieChart({
   var gradient = tinygradient(["#FF8042", "#3099f7"]);
   const COLORS = gradient.rgb(data.length).map((o) => o.toHexString());
 
-  console.log(COLORS);
-
   return (
     <Box className={clsx(styles.chartWrapper, styles.pie)} sx={{ height }}>
       <AutoSizer>

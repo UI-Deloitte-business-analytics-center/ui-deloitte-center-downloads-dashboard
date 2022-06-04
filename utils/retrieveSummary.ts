@@ -1,4 +1,12 @@
-import * as dfd from "danfojs-node";
+import * as dfd from "danfojs";
+import {
+  IContentDownloadSummary,
+  IContentTypeDownloadsSummary,
+  IDownloadsSummary,
+  IMemberTypeDownloadsSummary,
+  IUniversityDownloadsSummary,
+  IYearMonthDownloadsSummary,
+} from "../types/downloads-summary";
 
 const stateAbbrevationMap = {
   alabama: "AL",
@@ -53,7 +61,7 @@ const stateAbbrevationMap = {
   wyoming: "WY",
 };
 
-export async function retrieveSummary() {
+export async function retrieveSummary(): Promise<IDownloadsSummary> {
   const res = await fetch(
     `https://centerforanalytics.giesbusiness.illinois.edu/_functions/downloads_summary`
   );
@@ -153,7 +161,6 @@ export async function retrieveSummary() {
     { inplace: true }
   );
   dfByContent.sortValues("downloadCount", { ascending: false, inplace: true });
-  dfByContent.print();
 
   const dfContentTypeCount = distributedContent
     .groupby(["typePlural"])
@@ -181,8 +188,6 @@ export async function retrieveSummary() {
     inplace: true,
   });
 
-  dfByContentType.print();
-
   const dfByMemberType = df
     .groupby(["memberType"])
     .agg({
@@ -193,8 +198,6 @@ export async function retrieveSummary() {
     .fillNa(["Unknown or no longer a registered member"], {
       columns: ["memberType"],
     });
-
-  dfByMemberType.print();
 
   const dfInstructors = df.query(df["memberType"].eq("Instructor"));
   const dfByUniversity = dfInstructors
@@ -209,8 +212,6 @@ export async function retrieveSummary() {
     .sortValues("downloadCount", { ascending: false })
     .head(100);
 
-  dfByUniversity.print();
-
   const dfByYearMonth = df
     .groupby(["yearMonth"])
     .agg({
@@ -219,13 +220,13 @@ export async function retrieveSummary() {
     .sortValues("yearMonth")
     .rename({ distributedContent_count: "downloadCount" });
 
-  dfByYearMonth.print();
-
   return {
-    dfByContent: dfd.toJSON(dfByContent),
-    dfByContentType: dfd.toJSON(dfByContentType),
-    dfByMemberType: dfd.toJSON(dfByMemberType),
-    dfByUniversity: dfd.toJSON(dfByUniversity),
-    dfByYearMonth: dfd.toJSON(dfByYearMonth),
+    dfByContent: dfd.toJSON(dfByContent) as IContentDownloadSummary[],
+    dfByContentType: dfd.toJSON(
+      dfByContentType
+    ) as IContentTypeDownloadsSummary[],
+    dfByMemberType: dfd.toJSON(dfByMemberType) as IMemberTypeDownloadsSummary[],
+    dfByUniversity: dfd.toJSON(dfByUniversity) as IUniversityDownloadsSummary[],
+    dfByYearMonth: dfd.toJSON(dfByYearMonth) as IYearMonthDownloadsSummary[],
   };
 }
