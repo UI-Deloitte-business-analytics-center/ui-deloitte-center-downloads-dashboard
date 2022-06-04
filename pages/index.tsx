@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { retrieveSummary } from "../utils/retrieveSummary";
 import type { NextPage } from "next";
+import Link from "next/link";
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
-import {
-  Box,
-  CircularProgress,
-  Container,
-  LinearProgress,
-} from "@mui/material";
+import { Box, CircularProgress, Container } from "@mui/material";
 import DownloadsSummary from "../components/DownloadsSummary";
 import { IDownloadsSummary } from "../types/downloads-summary";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 const Home: NextPage = () => {
   const [summary, setSummary] = useState<IDownloadsSummary>(null);
@@ -26,9 +23,9 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>UI-Deloitte Center Dashboard</title>
+        <title>UI-Deloitte Center Downloads Dashboard</title>
       </Head>
 
       <main className={styles.main}>
@@ -57,9 +54,18 @@ const Home: NextPage = () => {
               <p className={styles.message}>Loading</p>
             </Box>
           )}
+
+          <footer className={styles.siteFooter}>
+            <Link href="https://github.com/UI-Deloitte-business-analytics-center/ui-deloitte-center-downloads-dashboard">
+              <a className={styles.linkItem}>
+                <GitHubIcon className={styles.icon} />
+                <span>Source</span>
+              </a>
+            </Link>
+          </footer>
         </Container>
       </main>
-    </div>
+    </>
   );
 };
 

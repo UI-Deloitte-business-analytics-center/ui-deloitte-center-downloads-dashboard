@@ -39,3 +39,21 @@
     margin-top: 1rem;
   }
 }
+
+.siteFooter {
+  margin-top: 4rem;
+  padding: 2rem 0;
+
+  .linkItem {
+    display: inline-flex;
+    align-items: center;
+
+    .icon {
+      margin-right: 0.5rem;
+    }
+
+    &:hover {
+      color: #666;
+    }
+  }
+}
