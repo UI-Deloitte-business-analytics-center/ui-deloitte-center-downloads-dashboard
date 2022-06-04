@@ -114,7 +114,10 @@ export async function retrieveSummary() {
       distributedContent: "count",
     })
     .rename({ distributedContent_count: "downloadCount" })
-    .sortValues("downloadCount", { ascending: false });
+    .sortValues("downloadCount", { ascending: false })
+    .fillNa(["Unknown or no longer a registered member"], {
+      columns: ["memberType"],
+    });
 
   dfByMemberType.print();
 
@@ -129,7 +132,7 @@ export async function retrieveSummary() {
       distributedContent_count: "downloadCount",
     })
     .sortValues("downloadCount", { ascending: false })
-    .head(50);
+    .head(100);
 
   dfByUniversity.print();
 
@@ -145,9 +148,9 @@ export async function retrieveSummary() {
 
   return {
     dfByContent: dfd.toJSON(dfByContent),
-    dfByContentType: dfd.toJSON(dfByContentType, { format: "row" }),
-    dfByMemberType: dfd.toJSON(dfByMemberType, { format: "row" }),
-    dfByUniversity: dfd.toJSON(dfByUniversity, { format: "row" }),
-    dfByYearMonth: dfd.toJSON(dfByYearMonth, { format: "row" }),
+    dfByContentType: dfd.toJSON(dfByContentType),
+    dfByMemberType: dfd.toJSON(dfByMemberType),
+    dfByUniversity: dfd.toJSON(dfByUniversity),
+    dfByYearMonth: dfd.toJSON(dfByYearMonth),
   };
 }
