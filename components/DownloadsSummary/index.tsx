@@ -71,6 +71,9 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
         <Tabs
           value={tabIndex}
           onChange={handleChange}
+          variant="scrollable"
+          scrollButtons
+          allowScrollButtonsMobile
           aria-label="summary criteria tabs"
         >
           <Tab label="Content" {...getTabProps(0)} />
