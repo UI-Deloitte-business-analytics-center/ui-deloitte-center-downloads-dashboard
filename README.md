@@ -11,6 +11,7 @@ The site is built with the following libraries/packages.
 - [Next.js](https://nextjs.org/): A React framework
 - [danfo.js](https://danfo.jsdata.org/): A Javascript pandas-like library
 - [Recharts](https://recharts.org/): A React charting library
+- [MUI](https://mui.com/): React components library (previously known as Material UI)
 - Please see [package.json](https://github.com/UI-Deloitte-business-analytics-center/ui-deloitte-center-downloads-dashboard/blob/main/package.json) for the full list of dependencies.
 
 ### Running locally
