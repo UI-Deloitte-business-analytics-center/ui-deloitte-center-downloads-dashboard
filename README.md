@@ -6,7 +6,18 @@ For questions or issues, please email Ye Joo Park at [ypark32@illinois.edu](mail
 
 ## Development
 
+The site is built with the following libraries/packages.
+
+- [Next.js](https://nextjs.org/): A React framework
+- [danfo.js](https://danfo.jsdata.org/): A Javascript pandas-like library
+- [Recharts](https://recharts.org/): A React charting library
+- Please see [package.json](https://github.com/UI-Deloitte-business-analytics-center/ui-deloitte-center-downloads-dashboard/blob/main/package.json) for the full list of dependencies.
+
 ### Running locally
+
+#### Pre-setup: Install node.js and NPM
+
+Make sure you have [node.js](https://nodejs.org/) installed on your machine.
 
 #### Clone the repository
 
