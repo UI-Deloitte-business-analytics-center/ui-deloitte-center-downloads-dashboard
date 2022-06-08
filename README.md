@@ -4,6 +4,67 @@ This dashboard fetches download logs from the [University of Illinois-Deloitte F
 
 For questions or issues, please email Ye Joo Park at [ypark32@illinois.edu](mailto:ypark32@illinois.edu).
 
+## Development
+
+### Running locally
+
+#### Clone the repository
+
+```bash
+$ git clone https://github.com/UI-Deloitte-business-analytics-center/ui-deloitte-center-downloads-dashboard
+```
+
+#### Install npm packages
+
+```bash
+# go into the cloned folder
+$ cd ui-deloitte-center-downloads-dashboard
+
+# using npm
+$ npm install
+# or using yarn
+$ yarn install
+```
+
+#### Run development server
+
+Running `npm run dev` (or `yarn dev`) will run a development server.
+
+```bash
+$ npm run dev
+# or
+$ yarn dev
+
+# output
+ready - started server on 0.0.0.0:3000, url: http://localhost:3000
+```
+
+Go to `http://localhost:3000` in your browser.
+
+#### Making changes
+
+Making changes to the files will hot-reload the development server.
+
+#### Stage and commit changes
+
+```bash
+$ git add -A
+$ git commit -m "Commit message here"
+$ git push
+```
+
+This will trigger a build in Vercel and will take 2~5 minutes to complete.
+
+
+If the build is successful, a green checkmark is displayed.
+
+![image](https://user-images.githubusercontent.com/1064036/172668279-8428e474-fc65-41cb-b036-48b2f664eccd.png)
+
+If the build fails, a red checkmark is displayed.
+
+![image](https://user-images.githubusercontent.com/1064036/172668292-22646848-2ad1-4eef-940d-292de2136b41.png)
+
+
 ## Notes
 - If a member downloads a material more than once, only the first download is used to generate this summary.
 - The download logs are pulled from Wix's `http-functions` backend. To customize what data you are pulling, edit the `http-functions.js` file through the Wix editor.
