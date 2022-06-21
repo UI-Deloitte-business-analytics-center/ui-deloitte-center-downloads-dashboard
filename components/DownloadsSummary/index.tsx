@@ -28,6 +28,7 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
     dfByMemberType,
     dfByUniversity,
     dfByYearMonth,
+    dfByMemberName,
   } = props.data;
 
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -65,6 +66,12 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
     { field: "downloadCount", headerName: "Unique Downloads", width: 200 },
   ];
 
+  const dfByMemberNameColumns: GridColDef[] = [
+    { field: "firstName", headerName: "First Name", width: 400 },
+    { field: "lastName", headerName: "Last Name", width: 400 },
+    { field: "downloadCount", headerName: "Unique Downloads", width: 200 },
+  ];
+
   return (
     <Box className={styles.downloadsSummary}>
       <Box className={styles.tabsWrapper}>
@@ -81,6 +88,7 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
           <Tab label="Member Type" {...getTabProps(2)} />
           <Tab label="University" {...getTabProps(3)} />
           <Tab label="Monthly" {...getTabProps(4)} />
+          <Tab label="Member Name" {...getTabProps(5)} />
         </Tabs>
       </Box>
 
@@ -166,6 +174,16 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
             <SummaryDataGrid
               data={dfByYearMonth}
               columns={dfByYearMonthColumns}
+            />
+          </Box>
+        )}
+        {tabIndex === 5 && (
+          <Box className={styles.tabContent}>
+            <h2>Downloads by Member</h2>
+
+            <SummaryDataGrid
+              data={dfByMemberName}
+              columns={dfByMemberNameColumns}
             />
           </Box>
         )}

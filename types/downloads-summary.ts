@@ -27,10 +27,20 @@ export interface IYearMonthDownloadsSummary {
   downloadCount: number;
 }
 
+export interface IMemberDownloadsSummary {
+  firstName: string;
+  lastName: string;
+  downloadCount: number;
+  
+}
+
 export interface IDownloadsSummary {
   dfByContent: IContentDownloadSummary[];
   dfByContentType: IContentTypeDownloadsSummary[];
   dfByMemberType: IMemberTypeDownloadsSummary[];
   dfByUniversity: IUniversityDownloadsSummary[];
   dfByYearMonth: IYearMonthDownloadsSummary[];
+  dfByMemberName: IMemberDownloadsSummary[];
+
 }
+

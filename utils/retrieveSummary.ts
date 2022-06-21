@@ -6,6 +6,7 @@ import {
   IMemberTypeDownloadsSummary,
   IUniversityDownloadsSummary,
   IYearMonthDownloadsSummary,
+  IMemberDownloadsSummary,
 } from "../types/downloads-summary";
 
 const stateAbbrevationMap = {
@@ -66,6 +67,7 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     `https://centerforanalytics.giesbusiness.illinois.edu/_functions/downloads_summary`
   );
   const data = await res.json();
+  
 
   const memberData = new dfd.DataFrame(data.memberData);
   memberData.rename({ i: "member" }, { inplace: true });
@@ -92,6 +94,7 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
   df.addColumn("yearMonth", df.column("downloadedAt").str.substr(0, 7), {
     inplace: true,
   });
+  
   df.drop({ columns: ["downloadedAt"], inplace: true });
 
   let groupByColumn = "title";
@@ -220,6 +223,18 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     .sortValues("yearMonth")
     .rename({ distributedContent_count: "downloadCount" });
 
+  const dfByMemberName = df
+    .groupby(["member", "firstName", "lastName"])
+    .agg({
+      distributedContent: "count",
+    })
+    .rename({
+      distributedContent_count: "downloadCount",
+    })
+    .sortValues("downloadCount", { ascending: false })
+    .head(100)
+    .dropNa({axis : 1});
+
   return {
     dfByContent: dfd.toJSON(dfByContent) as IContentDownloadSummary[],
     dfByContentType: dfd.toJSON(
@@ -228,5 +243,6 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     dfByMemberType: dfd.toJSON(dfByMemberType) as IMemberTypeDownloadsSummary[],
     dfByUniversity: dfd.toJSON(dfByUniversity) as IUniversityDownloadsSummary[],
     dfByYearMonth: dfd.toJSON(dfByYearMonth) as IYearMonthDownloadsSummary[],
+    dfByMemberName: dfd.toJSON(dfByMemberName) as IMemberDownloadsSummary[],
   };
 }
