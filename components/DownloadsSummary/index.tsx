@@ -67,8 +67,9 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
   ];
 
   const dfByMemberNameColumns: GridColDef[] = [
-    { field: "firstName", headerName: "First Name", width: 400 },
-    { field: "lastName", headerName: "Last Name", width: 400 },
+    { field: "firstName", headerName: "First Name", width: 200 },
+    { field: "lastName", headerName: "Last Name", width: 200 },
+    { field: "memberType", headerName: "Type", width: 200 },
     { field: "downloadCount", headerName: "Unique Downloads", width: 200 },
   ];
 
@@ -182,6 +183,7 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
             <h2>Downloads by Member</h2>
 
             <SummaryDataGrid
+              height = {800}
               data={dfByMemberName}
               columns={dfByMemberNameColumns}
             />

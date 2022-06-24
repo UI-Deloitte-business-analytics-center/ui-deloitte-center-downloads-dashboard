@@ -224,7 +224,7 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     .rename({ distributedContent_count: "downloadCount" });
 
   const dfByMemberName = df
-    .groupby(["member", "firstName", "lastName"])
+    .groupby(["member", "firstName", "lastName","memberType"])
     .agg({
       distributedContent: "count",
     })
@@ -232,7 +232,7 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
       distributedContent_count: "downloadCount",
     })
     .sortValues("downloadCount", { ascending: false })
-    .head(100)
+    .head(50)
     .dropNa({axis : 1});
 
   return {
