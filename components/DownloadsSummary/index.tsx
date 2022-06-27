@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
+import Select from "react-select";
 import dynamic from "next/dynamic";
 import styles from "./DownloadsSummary.module.scss";
 import { Box, Tabs, Tab } from "@mui/material";
@@ -29,6 +30,8 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
     dfByUniversity,
     dfByYearMonth,
     dfByMemberName,
+    dfByCountry,
+    dfCountries,
   } = props.data;
 
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -73,6 +76,21 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
     { field: "downloadCount", headerName: "Unique Downloads", width: 200 },
   ];
 
+  // const [value, setValue] = useState("")
+
+  // const options = 
+
+
+  const dfByCountryColumns: GridColDef[] = [
+    { field: "country", headerName: "Country", width: 200 },
+    {field: "title", headerName: "Title", width: 500},
+    { field: "downloadCount", headerName: "Unique Downloads", width: 200 },
+  ];
+
+  const dfCountriesColumns: GridColDef[] = [
+    { field: "country", headerName: "Country", width: 200 },
+  ];
+
   return (
     <Box className={styles.downloadsSummary}>
       <Box className={styles.tabsWrapper}>
@@ -90,6 +108,8 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
           <Tab label="University" {...getTabProps(3)} />
           <Tab label="Monthly" {...getTabProps(4)} />
           <Tab label="Member Name" {...getTabProps(5)} />
+          <Tab label="Country" {...getTabProps(6)} />
+          {/* <Tab label="Country" {...getTabProps(7)} /> */}
         </Tabs>
       </Box>
 
@@ -186,6 +206,28 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
               height = {800}
               data={dfByMemberName}
               columns={dfByMemberNameColumns}
+            />
+          </Box>
+        )}
+        {tabIndex === 6 && (
+          <Box className={styles.tabContent}>
+            <h2>Downloads by Country</h2>
+
+            <SummaryDataGrid
+              height = {800}
+              data={dfByCountry}
+              columns={dfByCountryColumns}
+            />
+          </Box>
+        )}
+        {tabIndex === 7 && (
+          <Box className={styles.tabContent}>
+            <h2>Downloads by Country</h2>
+
+            <SummaryDataGrid
+              height = {800}
+              data={dfCountries}
+              columns={dfCountriesColumns}
             />
           </Box>
         )}

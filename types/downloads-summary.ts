@@ -34,6 +34,12 @@ export interface IMemberDownloadsSummary {
   
 }
 
+export interface ICountryDownloadsSummary {
+  country: string;
+  downloadCount: number;
+  
+}
+
 export interface IDownloadsSummary {
   dfByContent: IContentDownloadSummary[];
   dfByContentType: IContentTypeDownloadsSummary[];
@@ -41,6 +47,7 @@ export interface IDownloadsSummary {
   dfByUniversity: IUniversityDownloadsSummary[];
   dfByYearMonth: IYearMonthDownloadsSummary[];
   dfByMemberName: IMemberDownloadsSummary[];
+  dfByCountry: ICountryDownloadsSummary[];
 
 }
 
