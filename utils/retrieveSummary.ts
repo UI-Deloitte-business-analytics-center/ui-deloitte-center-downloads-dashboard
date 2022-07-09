@@ -250,6 +250,17 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
   .head(50);
 
   const dfCountries = df.groupby(["country"]).count();
+
+  // const df_con = df.query(df["country"].eq("Australia"));
+  // const dfByCountry = df_con
+  // .groupby(["title","country"])
+    // .agg({
+    //   distributedContent: "count"
+    // })
+    // .rename({
+    //   distributedContent_count: "downloadCount",
+    // })
+    // .sortValues("downloadCount", { ascending: false })
   
   const dfByCountry = df
     .groupby(["country","title"])
@@ -262,6 +273,17 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     .sortValues("downloadCount", { ascending: false })
     .head(50)
 
+  const dfByCountryUni = df 
+    .groupby(["country"])
+    .agg({
+      distributedContent: "count"
+    })
+    .rename({
+      distributedContent_count: "downloadCount",
+    })
+    .sortValues("downloadCount", { ascending: false })
+    .head(10)
+
   return {
     dfByContent: dfd.toJSON(dfByContent) as IContentDownloadSummary[],
     dfByContentType: dfd.toJSON(
@@ -272,6 +294,6 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     dfByYearMonth: dfd.toJSON(dfByYearMonth) as IYearMonthDownloadsSummary[],
     dfByMemberName: dfd.toJSON(dfByMemberName) as IMemberDownloadsSummary[],
     dfByCountry: dfd.toJSON(dfByCountry) as ICountryDownloadsSummary[],
-    dfCountries: dfd.toJSON(dfCountries) as ICountriesList[],
+    dfByCountryUni: dfd.toJSON(dfByCountryUni) as ICountriesList[],
   };
 }
