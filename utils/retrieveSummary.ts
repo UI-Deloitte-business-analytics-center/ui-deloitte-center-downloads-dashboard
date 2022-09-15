@@ -224,30 +224,18 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     })
     .sortValues("yearMonth")
     .rename({ distributedContent_count: "downloadCount" });
-  
-  df.dropNa({axis: 1, inplace : true})  
-
-  let fname = df["firstName"].values;
-  let lname = df["lastName"].values;
-
-  let fdf = new dfd.Series(fname)
-  let fspace = fdf.str.concat(" ", 1)
-  let fullname = fspace.str.concat(lname, 1)
-
-  df.addColumn("memberName", fullname, {
-    inplace: true,
-  });
 
   const dfByMemberName = df
-  .groupby(["memberName","memberType"])
-  .agg({
-    distributedContent: "count",
-  })
-  .rename({
-    distributedContent_count: "downloadCount",
-  })
-  .sortValues("downloadCount", { ascending: false })
-  .head(50);
+    .groupby(["member", "firstName", "lastName","memberType"])
+    .agg({
+      distributedContent: "count",
+    })
+    .rename({
+      distributedContent_count: "downloadCount",
+    })
+    .sortValues("downloadCount", { ascending: false })
+    .head(50)
+    .dropNa({axis : 1});
 
   const dfCountries = df.groupby(["country"]).count();
   

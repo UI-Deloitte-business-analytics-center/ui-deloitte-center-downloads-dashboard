@@ -28,8 +28,8 @@ export interface IYearMonthDownloadsSummary {
 }
 
 export interface IMemberDownloadsSummary {
-  memberName: string;
-  // lastName: string;
+  firstName: string;
+  lastName: string;
   downloadCount: number;
   
 }
@@ -40,10 +40,6 @@ export interface ICountryDownloadsSummary {
   
 }
 
-export interface ICountriesList{
-  country: string;
-}
-
 export interface IDownloadsSummary {
   dfByContent: IContentDownloadSummary[];
   dfByContentType: IContentTypeDownloadsSummary[];
@@ -52,6 +48,6 @@ export interface IDownloadsSummary {
   dfByYearMonth: IYearMonthDownloadsSummary[];
   dfByMemberName: IMemberDownloadsSummary[];
   dfByCountry: ICountryDownloadsSummary[];
-  dfCountries: ICountriesList[];
+
 }
 
