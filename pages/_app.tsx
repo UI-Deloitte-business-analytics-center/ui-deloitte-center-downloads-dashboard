@@ -1,8 +1,12 @@
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
+import { withPasswordProtect } from "next-password-protect";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;
 }
 
-export default MyApp;
+// Before: export default App;
+export default process.env.PASSWORD_PROTECT
+  ? withPasswordProtect(MyApp)
+  : MyApp;

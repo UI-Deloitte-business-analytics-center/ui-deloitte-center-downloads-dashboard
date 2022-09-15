@@ -67,9 +67,9 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     `https://centerforanalytics.giesbusiness.illinois.edu/_functions/downloads_summary`
   );
   const data = await res.json();
-  
 
   const memberData = new dfd.DataFrame(data.memberData);
+
   memberData.rename({ i: "member" }, { inplace: true });
 
   const distributedContent = new dfd.DataFrame(data.distributedContent);
@@ -94,7 +94,7 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
   df.addColumn("yearMonth", df.column("downloadedAt").str.substr(0, 7), {
     inplace: true,
   });
-  
+
   df.drop({ columns: ["downloadedAt"], inplace: true });
 
   let groupByColumn = "title";
@@ -224,7 +224,7 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     .rename({ distributedContent_count: "downloadCount" });
 
   const dfByMemberName = df
-    .groupby(["member", "firstName", "lastName","memberType"])
+    .groupby(["member", "firstName", "lastName", "memberType"])
     .agg({
       distributedContent: "count",
     })
@@ -233,7 +233,7 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     })
     .sortValues("downloadCount", { ascending: false })
     .head(50)
-    .dropNa({axis : 1});
+    .dropNa({ axis: 1 });
 
   return {
     dfByContent: dfd.toJSON(dfByContent) as IContentDownloadSummary[],
