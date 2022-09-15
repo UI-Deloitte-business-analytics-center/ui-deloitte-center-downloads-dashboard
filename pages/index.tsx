@@ -15,7 +15,7 @@ const Home: NextPage = () => {
   const initialize = async () => {
     const data = await retrieveSummary();
 
-    console.log(data.dfCountries);
+    console.log(data);
 
     setSummary(data);
   };

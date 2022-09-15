@@ -7,8 +7,6 @@ import {
   IUniversityDownloadsSummary,
   IYearMonthDownloadsSummary,
   IMemberDownloadsSummary,
-  ICountryDownloadsSummary,
-  ICountriesList,
 } from "../types/downloads-summary";
 
 const stateAbbrevationMap = {
@@ -237,19 +235,6 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     .head(50)
     .dropNa({axis : 1});
 
-  const dfCountries = df.groupby(["country"]).count();
-  
-  const dfByCountry = df
-    .groupby(["country","title"])
-    .agg({
-      distributedContent: "count"
-    })
-    .rename({
-      distributedContent_count: "downloadCount",
-    })
-    .sortValues("downloadCount", { ascending: false })
-    .head(50)
-
   return {
     dfByContent: dfd.toJSON(dfByContent) as IContentDownloadSummary[],
     dfByContentType: dfd.toJSON(
@@ -259,7 +244,5 @@ export async function retrieveSummary(): Promise<IDownloadsSummary> {
     dfByUniversity: dfd.toJSON(dfByUniversity) as IUniversityDownloadsSummary[],
     dfByYearMonth: dfd.toJSON(dfByYearMonth) as IYearMonthDownloadsSummary[],
     dfByMemberName: dfd.toJSON(dfByMemberName) as IMemberDownloadsSummary[],
-    dfByCountry: dfd.toJSON(dfByCountry) as ICountryDownloadsSummary[],
-    dfCountries: dfd.toJSON(dfCountries) as ICountriesList[],
   };
 }
