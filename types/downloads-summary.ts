@@ -1,5 +1,3 @@
-import { SsgRoute } from "next/dist/build";
-
 export interface IContentDownloadSummary {
   title: string;
   downloadCount: number;
@@ -38,14 +36,12 @@ export interface IMemberDownloadsSummary {
 
 export interface ICountryDownloadsSummary {
   country: string;
-  title: SsgRoute;
   downloadCount: number;
   
 }
 
 export interface ICountriesList{
   country: string;
-  downloadCount: number;
 }
 
 export interface IDownloadsSummary {

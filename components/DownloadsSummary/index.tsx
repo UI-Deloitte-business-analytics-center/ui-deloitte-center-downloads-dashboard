@@ -7,7 +7,6 @@ import { GridColDef } from "@mui/x-data-grid";
 import SummaryBarChart from "../SummaryCharts/SummaryBarChart";
 import SummaryLineChart from "../SummaryCharts/SummaryLineChart";
 import SummaryPieChart from "../SummaryCharts/SummaryPieChart";
-import SummaryBarChartHori from "../SummaryCharts/SummaryBarChartHori";
 const SummaryDataGrid = dynamic(() => import("../SummaryDataGrid"), {
   ssr: false,
 });
@@ -32,7 +31,7 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
     dfByYearMonth,
     dfByMemberName,
     dfByCountry,
-    dfByCountryUni,
+    dfCountries,
   } = props.data;
 
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -77,15 +76,20 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
     { field: "downloadCount", headerName: "Unique Downloads", width: 200 },
   ];
 
+  // const [value, setValue] = useState("")
+
+  // const options = 
+
+
   const dfByCountryColumns: GridColDef[] = [
     { field: "country", headerName: "Country", width: 200 },
     {field: "title", headerName: "Title", width: 500},
     { field: "downloadCount", headerName: "Unique Downloads", width: 200 },
   ];
 
-  // const dfCountriesColumns: GridColDef[] = [
-  //   { field: "country", headerName: "Country", width: 200 },
-  // ];
+  const dfCountriesColumns: GridColDef[] = [
+    { field: "country", headerName: "Country", width: 200 },
+  ];
 
   return (
     <Box className={styles.downloadsSummary}>
@@ -100,13 +104,12 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
         >
           <Tab label="Content" {...getTabProps(0)} />
           <Tab label="Content Type" {...getTabProps(1)} />
-          <Tab label="Country" {...getTabProps(2)} />
-          <Tab label="Member Type" {...getTabProps(3)} />
-          <Tab label="University" {...getTabProps(4)} />
-          <Tab label="Monthly" {...getTabProps(5)} />
-          <Tab label="Member Name" {...getTabProps(6)} />
-          
-         
+          <Tab label="Member Type" {...getTabProps(2)} />
+          <Tab label="University" {...getTabProps(3)} />
+          <Tab label="Monthly" {...getTabProps(4)} />
+          <Tab label="Member Name" {...getTabProps(5)} />
+          <Tab label="Country" {...getTabProps(6)} />
+          {/* <Tab label="Country" {...getTabProps(7)} /> */}
         </Tabs>
       </Box>
 
@@ -145,25 +148,6 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
         )}
         {tabIndex === 2 && (
           <Box className={styles.tabContent}>
-          <h2>Downloads by Distributed Content</h2>
-
-          <SummaryBarChartHori
-            height={1000}
-            tickWidth={340}
-            data={dfByCountryUni}
-            xDataKey="country"
-            yDataKey="downloadCount"
-          />
-
-          <SummaryDataGrid
-              height = {800}
-              data={dfByCountry}
-              columns={dfByCountryColumns}
-            />
-          </Box>
-        )}
-        {tabIndex === 3 && (
-          <Box className={styles.tabContent}>
             <h2>Downloads by Member Type</h2>
 
             <SummaryPieChart
@@ -179,7 +163,7 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
             />
           </Box>
         )}
-        {tabIndex === 4 && (
+        {tabIndex === 3 && (
           <Box className={styles.tabContent}>
             <h2>Downloads by University (Top 100)</h2>
 
@@ -197,7 +181,7 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
             />
           </Box>
         )}
-        {tabIndex === 5 && (
+        {tabIndex === 4 && (
           <Box className={styles.tabContent}>
             <h2>Monthly Downloads</h2>
 
@@ -214,7 +198,7 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
             />
           </Box>
         )}
-        {tabIndex === 6 && (
+        {tabIndex === 5 && (
           <Box className={styles.tabContent}>
             <h2>Downloads by Member</h2>
 
@@ -225,7 +209,7 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
             />
           </Box>
         )}
-        {tabIndex === 7 && (
+        {tabIndex === 6 && (
           <Box className={styles.tabContent}>
             <h2>Downloads by Country</h2>
 
@@ -233,6 +217,17 @@ export default function DownloadsSummary(props: IDownloadsSummaryProps) {
               height = {800}
               data={dfByCountry}
               columns={dfByCountryColumns}
+            />
+          </Box>
+        )}
+        {tabIndex === 7 && (
+          <Box className={styles.tabContent}>
+            <h2>Downloads by Country</h2>
+
+            <SummaryDataGrid
+              height = {800}
+              data={dfCountries}
+              columns={dfCountriesColumns}
             />
           </Box>
         )}
